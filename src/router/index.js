@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login.vue'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -11,14 +10,24 @@ const routes = [
     name: 'login',
     component: login
   },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
+  {
+    path: '/main',
+    name: 'main',
+    component: () => import(/* webpackChunkName: "main" */ '../views/main.vue'),
+    // 子路由
+    // children: [
+    //   {
+    //     path: 'vipQuery',
+    //     name: 'vipQuery',
+    //     component: () => import(/* webpackChunkName: "vipQuery" */ '../views/vipQuery.vue')
+    //   }
+    // ]
+  },
+  {
+    path: '/vipQuery',
+         name: 'vipQuery',
+         component: () => import(/* webpackChunkName: "vipQuery" */'../views/vipQuery.vue')
+  }
 ]
 
 const router = new VueRouter({
