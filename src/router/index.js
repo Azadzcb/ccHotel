@@ -15,22 +15,40 @@ const routes = [
     name: 'main',
     component: () => import(/* webpackChunkName: "main" */ '../views/main.vue'),
     // 子路由
-    // children: [
-    //   {
-    //     path: 'vipQuery',
-    //     name: 'vipQuery',
-    //     component: () => import(/* webpackChunkName: "vipQuery" */ '../views/vipQuery.vue')
-    //   }
-    // ]
+    children: [
+      {
+        path: 'roomStatus',
+        name: 'roomStatus',
+        component: () => import(/* webpackChunkName: "roomStatus" */ '../views/roomStatus.vue')
+      },
+      {
+        path: 'guestInfo',
+        name: 'guestInfo',
+        component: () => import(/* webpackChunkName: "guestInfo" */ '../views/guestInfo.vue')
+      },
+      
+      {
+        path: 'guestBill',
+        name: 'guestBill',
+        component: () => import(/* webpackChunkName: "guestBill" */ '../views/guestBill.vue')
+      },
+      {
+        path: 'vipQuery',
+        name: 'vipQuery',
+        component: () => import(/* webpackChunkName: "vipQuery" */ '../views/vipQuery.vue')
+      },
+
+    ]
   },
-  {
-    path: '/vipQuery',
-         name: 'vipQuery',
-         component: () => import(/* webpackChunkName: "vipQuery" */'../views/vipQuery.vue')
-  }
+  // {
+  //   path: '/vipQuery',
+  //        name: 'vipQuery',
+  //        component: () => import(/* webpackChunkName: "vipQuery" */'../views/vipQuery.vue')
+  // }
 ]
 
 const router = new VueRouter({
+  linkActiveClass: 'router-link-active',
   mode: 'history',
   base: process.env.BASE_URL,
   routes

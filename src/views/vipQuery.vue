@@ -1,7 +1,16 @@
 <template>
   <div class="page-vip">
     <div class="vip-table">
-      <el-table stripe :data="tableData" height="700" border max-height="1000" highlight-current-row>//@selection-change="handleSelectionChange"
+      <el-table
+        stripe
+        :data="tableData"
+        height="700"
+        border
+        max-height="1000"
+        highlight-current-row
+        v-loading="Loading"
+      >
+        //@selection-change="handleSelectionChange"
         <el-table-column sortable type="selection" width="55"></el-table-column>
         <el-table-column sortable prop="leixing" label="类型"></el-table-column>
         <el-table-column sortable prop="kahao" label="卡号"></el-table-column>
@@ -16,9 +25,19 @@
       </el-table>
     </div>
     <div class="vip-foot">
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="changePage"
+          :current-page.sync="currentPage"
+          :page-sizes="[20, 40, 50]"
+          layout="sizes, pager"
+          :total="500"
+        ></el-pagination>
+      </div>
       <el-button-group>
-        <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
-        <el-button type="primary">
+        <el-button @click="backPage" type="primary" icon="el-icon-arrow-left">上一页</el-button>
+        <el-button @click="nextPage" type="primary">
           下一页
           <i class="el-icon-arrow-right el-icon--right"></i>
         </el-button>
@@ -35,11 +54,34 @@ export default {
     return {
       tableData: [],
       currentRow: null,
-      multipleSelection: []
+      multipleSelection: [],
+      Loading: false,
+      currentPage: 1
     };
   },
-  methods: {},
+  methods: {
+    changePage(val) {
+      console.log(`当前页: ${val}`);
+    },
+    backPage() {
+      if (this.currentPage > 1) {
+        this.currentPage = this.currentPage - 1;
+        console.log(this.currentPage);
+        console.log(this.changePage());
+      }
+      return;
+    },
+    nextPage() {
+      this.currentPage = this.currentPage + 1;
+      console.log(this.currentPage);
+      return;
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    }
+  },
   mounted() {
+    this.Loading = true; //页面开始加载
     this.axios
       .get("http://139.9.66.6:8080/kerenzhang_huiyuan", {
         params: {
@@ -84,10 +126,18 @@ export default {
           // console.log("----huiyuan_count----");
           // console.log(this.huiyuan_count);
         }
+        // this.Loading = false; //页面加载关闭
+        setTimeout(() => {
+          this.Loading = false;
+          this.$message.error({
+            message: "加载超时，刷新失败！",
+            center: true
+          });
+        }, 5000);
       })
       .catch(err => {
-        this.$message.error("网络故障！请求失败!");
-        // console.log(err);
+        // this.$message.err("网络故障！请求失败!");
+        console.log("请求失败");
       });
   }
 };
@@ -95,7 +145,7 @@ export default {
 
 <style>
 .page-vip {
-  /* background-color: red; */
+  background-color: white;
   height: 100%;
 }
 </style>

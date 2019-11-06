@@ -72,7 +72,7 @@
         },
         methods: {
             submitForm() {
-                this.$router.push('/vipQuery')
+                this.$router.push('/main')
             }
         }
     }
